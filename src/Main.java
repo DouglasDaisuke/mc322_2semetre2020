@@ -19,7 +19,6 @@ definirmos GrupoPublico como final?
 	6) Por que definimos os métodos adicionaMembro e removeMembro nas classes filhas e não na classe mãe (Grupo)?
  */
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Main {
@@ -30,22 +29,88 @@ public class Main {
 				"Tristeza", 
 				"tristeza@gmail.com.br", 
 				"triste0123", 
-				"descricao",
+				"descricao triste",
 				false ,
+				Calendar.getInstance()
+				);
+		Usuario userHappy = new Usuario (
+				"Felicidade", 
+				"felicidade@gmail.com.br", 
+				"feliz0123", 
+				"descricao feliz",
+				false ,
+				Calendar.getInstance()
+				);
+		Usuario userBoring = new Usuario (
+				"Chato", 
+				"hato@gmail.com.br", 
+				"chato0123", 
+				"descricao chata",
+				false ,
+				Calendar.getInstance()
+				);
+		Usuario userLively = new Usuario (
+				"Animacao", 
+				"animacao@gmail.com.br", 
+				"animacao0123", 
+				"descricao animada",
+				false ,
+				Calendar.getInstance()
+				);
+		Admin admin = new Admin(
+				"Administrator", 
+				"Administrator@gmail.com.br", 
+				"admin0123", 
+				"descricao de admin",
+				true ,
 				Calendar.getInstance()
 				);
 		GrupoPublico group = new GrupoPublico(
 				1,
-				"new group",
+				"new public group",
 				"description",
 				userSad,
 				true,
 				Calendar.getInstance()
 				);
+		GrupoPrivado VIPgroup = new GrupoPrivado(
+				2,
+				"new VIP group",
+				"description VIP",
+				userHappy,
+				true,
+				Calendar.getInstance()
+				);
+
+		System.out.println("___________informações padrões...____________ ");
+		System.out.println(group);
+		System.out.println(VIPgroup);
+
 		
-		System.out.println("goup informations: " + group);
-
-
+		System.out.println("___________adicionando no grupo publico...____________ ");
+		group.adicionaMembro(userSad);		
+		System.out.println(group);
+		group.adicionaMembro(userLively);		
+		System.out.println(group);
+		
+		System.out.println("___________removendo do grupo publico...____________ ");
+		group.removeMembro(userSad);		
+		System.out.println(group);
+		group.removeMembro(userLively);		
+		System.out.println(group);
+		
+		System.out.println("___________adicionando no grupo privado...____________ ");
+		VIPgroup.adicionaMembro(userHappy);		
+		System.out.println(VIPgroup);
+		VIPgroup.adicionaMembro(userBoring);		
+		System.out.println(VIPgroup);
+		
+		
+		System.out.println("___________removendo do grupo privado...____________ ");
+		VIPgroup.removeMembro(userHappy);
+		System.out.println(VIPgroup);
+		VIPgroup.removeMembro(userBoring);		
+		System.out.println(VIPgroup);
 		 
 	}
 }

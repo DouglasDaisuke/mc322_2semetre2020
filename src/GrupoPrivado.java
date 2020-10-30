@@ -12,13 +12,26 @@ public class GrupoPrivado extends Grupo{
 		out = out + " nome:"+ getNome()  +" (id: "+getId() +")\n";
 		out = out + " descricao:" + getDescricao()  +"\n";
 		out = out + " dono: "+ getDono() +"\n";
-//		for (String i:membros)
-			out = out + " membros: "+ getMembros() +"\n";
+		out = out + " membros: "+ getMembros() +"\n";
 		out = out + " status: "+ isStatus() +"\n";
 		if (getDataCriacao() == null)
 			out = out + "dataCriacao = " + "sem data" +"\n";
 		else
 			out = out + "dataCriacao = " + getDataCriacao().getTime() +"\n";
 		return out;
+	}
+	
+	public void adicionaMembro(Usuario user) {
+		if (isStatus() == true)
+			getMembros().add(user);
+		else
+			System.out.println("Não foi possível adicionar, pois o status do grupo está inativo");
+	}
+	
+	public void removeMembro(Usuario user) {
+		if (isStatus() == true)
+			getMembros().remove(user);
+		else
+			System.out.println("Não foi possível remover, pois o status do grupo está inativo");
 	}
 }

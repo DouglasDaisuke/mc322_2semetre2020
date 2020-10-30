@@ -7,7 +7,7 @@ public class Admin extends Usuario{
 	}
 
 	public void desabilitaGrupo() {
-		
+		System.out.println("desabilita o grupo");
 	}
 
 }

@@ -164,6 +164,7 @@ public class Sala {
 			"Nome padrão", 
 			"email.generico@gmail.com.br", 
 			"batata123", 
+			"descricao",
 			false ,
 			Calendar.getInstance()
 			);

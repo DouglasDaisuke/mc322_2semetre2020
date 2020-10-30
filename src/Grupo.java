@@ -27,8 +27,7 @@ public class Grupo {
 		out = out + " nome:"+ nome  +" (id: "+ id +")\n";
 		out = out + " descricao:" + descricao  +"\n";
 		out = out + " dono: "+ dono +"\n";
-//		for (String i:membros)
-			out = out + " membros: "+ membros +"\n";
+		out = out + " membros: "+ membros +"\n";
 		out = out + " status: "+ status +"\n";
 		if (dataCriacao == null)
 			out = out + "dataCriacao = " + "sem data" +"\n";
