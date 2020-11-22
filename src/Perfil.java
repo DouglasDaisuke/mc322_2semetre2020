@@ -1,15 +1,15 @@
 import java.util.Calendar;
 
 public class Perfil {
-	private char sexo;
+	private Sexo sexo;
 	private Calendar dataNascimento;
 	private String cidade;
-	private String estado;
+	private Estado estado;
 	private String telefone;
 	private String descricao;
 	private String foto;
 
-	public Perfil(char sexo, Calendar dataNascimento, String cidade, String estado, String telefone, String descricao,
+	public Perfil(Sexo sexo, Calendar dataNascimento, String cidade, Estado estado, String telefone, String descricao,
 			String foto) {
 		this.sexo = sexo;
 		this.dataNascimento = dataNascimento;
@@ -31,14 +31,14 @@ public class Perfil {
 		return out;
 	}
 
-	public char getSexo() {
+	public Sexo getSexo() {
 		return sexo;
 	}
 
-	public void setSexo(char sexo) {
+	public void setSexo(Sexo sexo) {
 		this.sexo = sexo;
 	}
-
+	
 	public Calendar getDataNascimento() {
 		return dataNascimento;
 	}
@@ -55,11 +55,11 @@ public class Perfil {
 		this.cidade = cidade;
 	}
 
-	public String getEstado() {
+	public Estado getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
 	public String getTelefone() {

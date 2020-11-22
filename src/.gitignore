@@ -9,3 +9,11 @@
 /GrupoPublico.class
 /GrupoPrivado.class
 /Admin.class
+/Sexo.class
+/Estado.class
+/Permissoes.class
+/Labek.class
+/Label.class
+/Perfil$estado.class
+/Perfil$sexo.class
+/Permissao.class

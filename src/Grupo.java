@@ -10,7 +10,11 @@ public class Grupo {
 	private ArrayList<Usuario> membros;
 	private boolean status;
 	private Calendar dataCriacao; 
-	
+	private ArrayList<Usuario> permissaoAdicionar;
+	private ArrayList<Usuario> permissaoRemover;
+	private ArrayList<Usuario> permissaoAlterar;
+	private ArrayList<Usuario> permissaoVisualizar;
+
 	public Grupo(String nome, String descricao, Usuario dono, boolean status,
 			Calendar dataCriacao) {
 		super();
@@ -19,6 +23,14 @@ public class Grupo {
 		this.nome = nome;
 		this.descricao = descricao;
 		this.dono = dono;
+		this.permissaoAdicionar = new ArrayList<Usuario>();
+		this.permissaoAdicionar.add(dono);
+		this.permissaoRemover = new ArrayList<Usuario>();
+		this.permissaoRemover.add(dono);
+		this.permissaoAlterar = new ArrayList<Usuario>();
+		this.permissaoAlterar.add(dono);
+		this.permissaoVisualizar = new ArrayList<Usuario>();
+		this.permissaoVisualizar.add(dono);
 		this.membros = new ArrayList<Usuario>(); 
 		this.status = status;
 		this.dataCriacao = dataCriacao;
@@ -32,6 +44,10 @@ public class Grupo {
 		out = out + " descricao do grupo:" + descricao  +"\n";
 		out = out + " dono do grupo: "+ dono +"\n";
 		out = out + " membros : "+ membros +"\n";
+		out = out + "permissaoAdicionar"+ permissaoAdicionar+"\n";
+		out = out + "permissaoRemover"+ permissaoRemover +"\n";
+		out = out + "permissaoAlterar"+ permissaoAlterar+"\n" ;
+		out = out + "permissaoVisualizar"+ permissaoVisualizar+"\n" ;
 		out = out + " status do grupo: "+ status +"\n";
 		if (dataCriacao == null)
 			out = out + " dataCriacao do grupo = " + "sem data" +" \n";
@@ -112,4 +128,37 @@ public class Grupo {
 		this.dataCriacao = dataCriacao;
 	}
 
+	public ArrayList<Usuario> getPermissaoAdicionar() {
+		return permissaoAdicionar;
+	}
+
+	public void setPermissaoAdicionar(ArrayList<Usuario> permissaoAdicionar) {
+		this.permissaoAdicionar = permissaoAdicionar;
+	}
+
+	public ArrayList<Usuario> getPermissaoRemover() {
+		return permissaoRemover;
+	}
+
+	public void setPermissaoRemover(ArrayList<Usuario> permissaoRemover) {
+		this.permissaoRemover = permissaoRemover;
+	}
+
+	public ArrayList<Usuario> getPermissaoAlterar() {
+		return permissaoAlterar;
+	}
+
+	public void setPermissaoAlterar(ArrayList<Usuario> permissaoAlterar) {
+		this.permissaoAlterar = permissaoAlterar;
+	}
+
+	public ArrayList<Usuario> getPermissaoVisualizar() {
+		return permissaoVisualizar;
+	}
+
+	public void setPermissaoVisualizar(ArrayList<Usuario> permissaoVisualizar) {
+		this.permissaoVisualizar = permissaoVisualizar;
+	}
+	
+	
 }

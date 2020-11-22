@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Cartao {
@@ -6,17 +7,18 @@ public class Cartao {
 	private int id;
 	private int visibilidade;
 	private String nome;
-	private Usuario dono;
+	private ArrayList<Label> Label;
 	private boolean invitationOnly;
 	private Calendar dataCriacao;
 
-	public Cartao(int visibilidade, String nome, Usuario dono, boolean invitationOnly,
+	public Cartao(int visibilidade, String nome, ArrayList<Label> label, boolean invitationOnly,
 			Calendar dataCriacao) {
 		this.id = numeroCartoes;
 		setNumeroCartoes( numeroCartoes + 1);
 		this.visibilidade = visibilidade;
 		this.nome = nome;
-		this.dono = dono;
+		this.Label = new ArrayList<Label>();
+		this.Label = label;
 		this.invitationOnly = invitationOnly;
 		this.dataCriacao = dataCriacao;
 	}
@@ -26,7 +28,7 @@ public class Cartao {
 		setNumeroCartoes( numeroCartoes + 1);
 		this.visibilidade = 1;
 		this.nome = "Anônimo";
-		this.dono = userDefault;
+		this.Label = new ArrayList<Label>();
 		this.invitationOnly = true;
 		this.dataCriacao = Calendar.getInstance();
 	}
@@ -37,7 +39,7 @@ public class Cartao {
 		out = out + "id = " + id +"\n";
 		out = out + "visibilidade = " + visibilidade +"\n";
 		out = out + "nome = "+ nome +"\n";
-		out = out + "dono = "+  dono +"\n";
+		out = out + "Label = "+ Label +"\n";
 		out = out + "invitationOnly = " + invitationOnly +"\n";
 		if (dataCriacao == null)
 			out = out + "dataCriacao = " + "sem data" +"\n";
@@ -58,10 +60,6 @@ public class Cartao {
 		return id;
 	}
 
-	private void setId(int id) {
-		this.id = id;
-	} 
-
 	public int getVisibilidade() {
 		return visibilidade;
 	}
@@ -76,14 +74,6 @@ public class Cartao {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Usuario getDono() {
-		return dono;
-	}
-
-	public void setDono(Usuario dono) {
-		this.dono = dono;
 	}
 
 	public boolean isInvitationOnly() {
@@ -102,12 +92,6 @@ public class Cartao {
 		this.dataCriacao = dataCriacao;
 	}
 
-	Usuario userDefault = new Usuario (
-			"Nome padrão", 
-			"email.generico@gmail.com.br", 
-			"batata123", 
-			false ,
-			Calendar.getInstance()
-			);
+
 
 }

@@ -101,6 +101,16 @@ public class Usuario {
 	public ArrayList<Grupo> getGrupos() {
 		return grupos;
 	}
+	
+	public ArrayList<Grupo> getGruposVisiveis() {
+		ArrayList<Grupo> gruposVisiveis = new ArrayList<Grupo>();
+		for (Grupo g: grupos ) {
+			if(g.getPermissaoVisualizar().contains(this) == true) {
+				gruposVisiveis.add(g);
+			}
+		}
+		return gruposVisiveis;
+	}
 
 	public void setGrupos(ArrayList<Grupo> grupos) {
 		this.grupos = grupos;
