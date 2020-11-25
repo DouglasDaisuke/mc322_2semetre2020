@@ -1,25 +1,21 @@
 
 public enum Sexo {
-	Homem("H"),
-	Mulher("M");
+	Homem("H", "descricao do homem"),
+	Mulher("M", "descricao da mulher");
 
-	Sexo(String sigla) {
+	Sexo(String sigla, String descricao) {
 		this.sigla = sigla;
+		this.descricao = descricao;
 	}
 
 	private String sigla;
-	private String nomePorExtenso;
+	private String descricao;
 	
 	public String getSigla() {
 		return sigla;
 	}
 	
-	public String getNomePorExtenso() {
-		return nomePorExtenso;
+	public String getDescricao() {
+		return descricao;
 	}
-
-	public void setNomePorExtenso(String nomePorExtenso) {
-		this.nomePorExtenso = nomePorExtenso;
-	}
-
 }

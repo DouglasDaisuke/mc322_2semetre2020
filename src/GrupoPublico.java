@@ -8,23 +8,25 @@ public final class GrupoPublico extends Grupo{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String toString() {
-		String out =  "{ \n";
-		out = out + " nome do grupo publico:"+ getNome()  +" (id: "+getId() +")\n";
-		out = out + " descricao do grupo publico:" + getDescricao()  +"\n";
-		out = out + " dono do grupo publico: "+ getDono() +"\n";
-		out = out + " membros do grupo publico: "+ getMembros() +"\n";
-		out = out + "permissaoAdicionar"+ getPermissaoAdicionar()+"\n";
-		out = out + "permissaoRemover"+ getPermissaoRemover() +"\n";
-		out = out + "permissaoAlterar"+ getPermissaoAlterar()+"\n" ;
-		out = out + "permissaoVisualizar"+ getPermissaoVisualizar()+"\n" ;
-		out = out + " status do grupo publico: "+ isStatus() +"\n";
-		if (getDataCriacao() == null)
-			out = out + " dataCriacao do grupo publico = " + "sem data" +"\n";
-		else
-			out = out + " dataCriacao do grupo publico = " + getDataCriacao().getTime() +"\n";
-		out = out + " }";
-		return out;
+	public String toString(Usuario user) {
+		if (this.getPermissaoVisualizar().contains(user) == true) {
+			String out =  "{ \n";
+			out = out + " nome do grupo publico:"+ getNome()  +" (id: "+getId() +")\n";
+			out = out + " descricao do grupo publico:" + getDescricao()  +"\n";
+			out = out + " dono do grupo publico: "+ getDono() +"\n";
+			out = out + " membros do grupo publico: "+ getMembros() +"\n";
+			out = out + "permissaoAdicionar"+ getPermissaoAdicionar()+"\n";
+			out = out + "permissaoRemover"+ getPermissaoRemover() +"\n";
+			out = out + "permissaoAlterar"+ getPermissaoAlterar()+"\n" ;
+			out = out + "permissaoVisualizar"+ getPermissaoVisualizar()+"\n" ;
+			out = out + " status do grupo publico: "+ isStatus() +"\n";
+			if (getDataCriacao() == null)
+				out = out + " dataCriacao do grupo publico = " + "sem data" +"\n";
+			else
+				out = out + " dataCriacao do grupo publico = " + getDataCriacao().getTime() +"\n";
+			out = out + " }";
+			return out;
+		}else return "Não tem permissão para visualizar";
 	}
 	
 	public boolean adicionaMembro(Usuario userWhoAdds,Usuario userToBeAdd) {
@@ -39,7 +41,7 @@ public final class GrupoPublico extends Grupo{
 	}
 	
 	public boolean removeMembro(Usuario userWhoRemoves, Usuario userToBeRemoved) {
-		if (isStatus() == true && getPermissaoRemover().contains(userWhoRemoves) == true) {
+		if (isStatus() == true && getPermissaoRemover().contains(userWhoRemoves) == true && userToBeRemoved != this.getDono()) {
 			getMembros().remove(userToBeRemoved);
 			removePermissao(userWhoRemoves,userToBeRemoved,Permissao.valuesInArrayList());
 			userToBeRemoved.getGrupos().remove(this);
@@ -71,7 +73,7 @@ public final class GrupoPublico extends Grupo{
 	}
 	
 	public boolean removePermissao(Usuario userWhoRemovesPermission, Usuario userWhoLostPermissions, ArrayList<Permissao> listOfPermission) {
-		if (getPermissaoAlterar().contains(userWhoRemovesPermission) == true) {
+		if (getPermissaoAlterar().contains(userWhoRemovesPermission) == true && userWhoLostPermissions != this.getDono()) {
 			for (Permissao p: listOfPermission) {
 				if (p == Permissao.ADICIONAR_USUARIO) {
 					getPermissaoAdicionar().remove(userWhoLostPermissions);

@@ -1,14 +1,19 @@
 import java.util.ArrayList;
 
 public enum Permissao {
-	ADICIONAR_USUARIO,
-	REMOVER_USUARIO,
-	ALTERAR_PERMISSAO,
-	VISUALIZAR_INFO;
+	ADICIONAR_USUARIO (1, "os usuarios tem permissao de adicionar um membro"),
+	REMOVER_USUARIO (2, "os usuarios tem permissao de remover um membro"),
+	ALTERAR_PERMISSAO (3, "o usuario tem permissao de alterar as permissao de um membro"),
+	VISUALIZAR_INFO (4, "o usuario tem permissao de visualizar as informações do grupo");
 	
-	private int id;
-	private String description;
+	private int codigo;
+	private String descricao;
 	
+	Permissao(int codigo, String descricao) {
+		this.codigo = codigo;
+		this.descricao = descricao;
+	}
+
 	public static ArrayList<Permissao> valuesInArrayList(){
 		ArrayList<Permissao> p = new ArrayList<Permissao>();
 		for (Permissao values : Permissao.values()) {
@@ -17,19 +22,11 @@ public enum Permissao {
 		return p; 
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public int getcodigo() {
+		return codigo;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getDescription() {
-		return description;
+	public String getDescricao() {
+		return descricao;
 	}
 }

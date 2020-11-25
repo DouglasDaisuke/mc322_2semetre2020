@@ -1,25 +1,22 @@
 
 public enum Label {
-	 TO_DO,
-	 DOING,
-	 DONE;
+	 TO_DO ("urgente", "vermelho"),
+	 DOING ("atenção", "amarelo"),
+	 DONE ("ok", "verde");
 	
 	private String rotulo;
 	private String cor;
 	
+	Label(String rotulo, String cor) {
+		this.cor = cor;
+		this.rotulo = rotulo;
+	}
+
 	public String getRotulo() {
 		return rotulo;
 	}
 	
-	public void setRotulo(String rotulo) {
-		this.rotulo = rotulo;
-	}
-	
 	public String getCor() {
 		return cor;
-	}
-	 
-	public void setCor(String cor) {
-		this.cor = cor;
 	}
 }

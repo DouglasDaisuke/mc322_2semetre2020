@@ -1,16 +1,20 @@
 /*	Questões:
 
 	1) Há alguma diferença entre utilizar atributos final e Enumerações ? Explique.
+	R: Sim, as enumerações possue um conjunto de constantes que são final e estaticas, mas além disso é possível ter elementos de uma classe comum, como atributos, 
+	métodos e construtores. Então é possível trabalhar com esses elementos da mesma forma que fazemos com as classes comuns.
 	
 	2) Na main tente instanciar uma nova Permissao (enum) com a palavra-chave new, o que acontece? Qual seria o motivo desse
 resultado?
+	R: Acontece um erro de compilação, pois não é possível criar novas instâncias além daquelas declaradas como constante na construção da enumeração.
 
 	3) Sobre os relacionamentos entre as classes: Em teoria, qual o tipo de relacionamento entre as Grupo(Privado e Público)
 e Usuario? E entre Usuario e Sala? (Lembre-se que relacionamentos são classificados em: Associação, Agregação e
 Composição.)
+	R: Ambos possuem relação de Associação
 
 	4) Qual a multiplicidade dos relacionamentos citados na questão anterior?
-
+	R: Na relação de grupos e usuarios, o relacionamento é muitos para muitos, e na relação de Sala e Usuario é 1 para muitos.
 */
 
 import java.util.ArrayList;
@@ -130,17 +134,17 @@ public class Main {
 		System.out.println(group);
 		System.out.println();
 		
-		System.out.println("___________ userHappy removendo permissao de alterar do userSad...____________ ");
+		System.out.println("___________ userHappy removendo permissao de alterar do adminJunior...____________ ");
 		ArrayList<Permissao> arrayListWithAlteraPermissao = new ArrayList<Permissao>();
 		arrayListWithAlteraPermissao.add(Permissao.ALTERAR_PERMISSAO);
-		if (group.removePermissao(userHappy, userSad, arrayListWithAlteraPermissao) == true) {
+		if (group.removePermissao(userHappy, adminJunior, arrayListWithAlteraPermissao) == true) {
 			System.out.println("permissao removida!");	
 		}else System.out.println("não foi possível remover permissao!");
 		System.out.println(group);
 		System.out.println();
 		
-		System.out.println("___________ userHappy adicionando permissao de alterar do userSad ...____________ ");
-		if (group.adicionaPermissao(userHappy, userSad, arrayListWithAlteraPermissao) == true) {
+		System.out.println("___________ userHappy adicionando permissao de alterar do adminJunior ...____________ ");
+		if (group.adicionaPermissao(userHappy, adminJunior, arrayListWithAlteraPermissao) == true) {
 			System.out.println("permissao adicionada!");	
 		}else System.out.println("não foi possível adicionar permissao!");
 		System.out.println();
@@ -160,7 +164,7 @@ public class Main {
 		if (VIPgroup.adicionaMembro(userHappy, userBoring) == true) {
 			System.out.println("membro adicionado!");	
 		}else System.out.println("não foi possível adicionar!");
-		if (VIPgroup.adicionaMembro(userHappy, userLively) == true) {
+		if (VIPgroup.adicionaMembro(userHappy, adminSenior) == true) {
 			System.out.println("membro adicionado!");	
 		}else System.out.println("não foi possível adicionar!");
 		System.out.println();
