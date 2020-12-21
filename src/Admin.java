@@ -14,5 +14,28 @@ public class Admin extends Usuario{
 		else
 			return false;
 	}
+	
+	public Grupo criaGrupo(boolean visibilidade) {
+		if (visibilidade == true) {
+			GrupoPublico grupoPublico = new GrupoPublico(
+						"groupPublicName",
+						"descriptionOfGroup",
+						this,
+						true,
+						Calendar.getInstance()
+						);
+			return grupoPublico;
+		}else {
+			GrupoPrivado grupoPrivado = new GrupoPrivado(
+					"groupPrivateName",
+					"descriptionOfGroup",
+					this,
+					true,
+					Calendar.getInstance()
+					);
+			return grupoPrivado;
+		}
+	}
+
 
 }

@@ -7,18 +7,19 @@ public class Cartao {
 	private int id;
 	private int visibilidade;
 	private String nome;
-	private ArrayList<Label> Label;
+	private ArrayList<Label> label = new ArrayList<Label>();
+	private String assunto;
 	private boolean invitationOnly;
 	private Calendar dataCriacao;
 
-	public Cartao(int visibilidade, String nome, ArrayList<Label> label, boolean invitationOnly,
+	public Cartao(int visibilidade, String nome, Label label,String assunto, boolean invitationOnly,
 			Calendar dataCriacao) {
 		this.id = numeroCartoes;
 		setNumeroCartoes( numeroCartoes + 1);
 		this.visibilidade = visibilidade;
 		this.nome = nome;
-		this.Label = new ArrayList<Label>();
-		this.Label = label;
+		this.label.add(label);
+		this.assunto = assunto;
 		this.invitationOnly = invitationOnly;
 		this.dataCriacao = dataCriacao;
 	}
@@ -28,7 +29,8 @@ public class Cartao {
 		setNumeroCartoes( numeroCartoes + 1);
 		this.visibilidade = 1;
 		this.nome = "Anônimo";
-		this.Label = new ArrayList<Label>();
+		this.label.add(Label.TO_DO);
+		this.assunto = "assunto";
 		this.invitationOnly = true;
 		this.dataCriacao = Calendar.getInstance();
 	}
@@ -39,7 +41,7 @@ public class Cartao {
 		out = out + "id = " + id +"\n";
 		out = out + "visibilidade = " + visibilidade +"\n";
 		out = out + "nome = "+ nome +"\n";
-		out = out + "Label = "+ Label +"\n";
+		out = out + "Label = "+ label +"\n";
 		out = out + "invitationOnly = " + invitationOnly +"\n";
 		if (dataCriacao == null)
 			out = out + "dataCriacao = " + "sem data" +"\n";
@@ -75,6 +77,14 @@ public class Cartao {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
+	}
 
 	public boolean isInvitationOnly() {
 		return invitationOnly;
@@ -91,7 +101,5 @@ public class Cartao {
 	public void setDataCriacao(Calendar dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-
-
 
 }

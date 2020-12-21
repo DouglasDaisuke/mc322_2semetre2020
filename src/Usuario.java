@@ -128,30 +128,29 @@ public class Usuario {
 		this.dataAtivacao = dataAtivacao;
 	}
 	
-	public void criaGrupo(String nameOfGroup, String descriptionOfGroup, boolean publicGroup) {
-		if (publicGroup == true) {
-			GrupoPublico grupoPublico = new GrupoPublico(
-						nameOfGroup,
-						descriptionOfGroup,
-						this,
-						true,
-						Calendar.getInstance()
-						);
-			getGrupos().add(grupoPublico);
-		}if (publicGroup == false) {
-			GrupoPrivado grupoPrivado = new GrupoPrivado(
-					nameOfGroup,
-					descriptionOfGroup,
-					this,
-					true,
-					Calendar.getInstance()
-					);
-			getGrupos().add(grupoPrivado);
-		}
-		
+	public Grupo criaGrupo(boolean visibilidade) {
+		return null;
 	}
 	
 	public void removeGrupo(Grupo groupToBeRemoved) {
 		getGrupos().remove(groupToBeRemoved);;
+	}
+	
+	public boolean criarCartao(int id) {
+		for (Grupo grupo: getGrupos()){
+			if (grupo.getId() == id && grupo.getPermissaoCriarCartao().contains(this)) {
+				Cartao cartao = new Cartao(
+						1, 
+						"Cartao", 
+						Label.TO_DO, 
+						"assunto",
+						true,
+						Calendar.getInstance()
+						);
+				grupo.adicionaCartao(cartao);
+				return true;
+			}
+		}
+		return false;
 	}
 }

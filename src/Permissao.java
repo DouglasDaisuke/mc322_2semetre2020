@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 
 public enum Permissao {
-	ADICIONAR_USUARIO (1, "os usuarios tem permissao de adicionar um membro"),
-	REMOVER_USUARIO (2, "os usuarios tem permissao de remover um membro"),
+	ADICIONAR_USUARIO (1, "o usuario tem permissao de adicionar um membro"),
+	REMOVER_USUARIO (2, "o usuario tem permissao de remover um membro"),
 	ALTERAR_PERMISSAO (3, "o usuario tem permissao de alterar as permissao de um membro"),
-	VISUALIZAR_INFO (4, "o usuario tem permissao de visualizar as informações do grupo");
+	VISUALIZAR_INFO (4, "o usuario tem permissao de visualizar as informações do grupo"),
+	CRIAR_CARTAO (5, "o usuario tem permissao de criar um cartao");
 	
 	private int codigo;
 	private String descricao;

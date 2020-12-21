@@ -19,6 +19,7 @@ public final class GrupoPublico extends Grupo{
 			out = out + "permissaoRemover"+ getPermissaoRemover() +"\n";
 			out = out + "permissaoAlterar"+ getPermissaoAlterar()+"\n" ;
 			out = out + "permissaoVisualizar"+ getPermissaoVisualizar()+"\n" ;
+			out = out + "permissaoCriarCartao"+ getPermissaoCriarCartao() +"\n" ;
 			out = out + " status do grupo publico: "+ isStatus() +"\n";
 			if (getDataCriacao() == null)
 				out = out + " dataCriacao do grupo publico = " + "sem data" +"\n";
@@ -66,6 +67,9 @@ public final class GrupoPublico extends Grupo{
 				if(p == Permissao.VISUALIZAR_INFO) {
 					getPermissaoVisualizar().add(userWhoRecivePermissions);
 				}
+				if(p == Permissao.CRIAR_CARTAO) {
+					getPermissaoCriarCartao().add(userWhoRecivePermissions);
+				}
 			}
 			return true;
 		}else 
@@ -86,6 +90,9 @@ public final class GrupoPublico extends Grupo{
 				}
 				if(p == Permissao.VISUALIZAR_INFO) {
 					getPermissaoVisualizar().remove(userWhoLostPermissions);
+				}
+				if(p == Permissao.CRIAR_CARTAO) {
+					getPermissaoCriarCartao().remove(userWhoLostPermissions);
 				}
 			}
 			return true;

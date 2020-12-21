@@ -14,6 +14,8 @@ public class Grupo {
 	private ArrayList<Usuario> permissaoRemover;
 	private ArrayList<Usuario> permissaoAlterar;
 	private ArrayList<Usuario> permissaoVisualizar;
+	private ArrayList<Usuario> permissaoCriarCartao;
+	private ArrayList<Cartao> cartoes;
 
 	public Grupo(String nome, String descricao, Usuario dono, boolean status,
 			Calendar dataCriacao) {
@@ -31,6 +33,9 @@ public class Grupo {
 		this.permissaoAlterar.add(dono);
 		this.permissaoVisualizar = new ArrayList<Usuario>();
 		this.permissaoVisualizar.add(dono);
+		this.permissaoCriarCartao = new ArrayList<Usuario>();
+		this.permissaoCriarCartao.add(dono);
+		this.cartoes = new ArrayList<Cartao>();
 		this.membros = new ArrayList<Usuario>(); 
 		this.status = status;
 		this.dataCriacao = dataCriacao;
@@ -48,6 +53,8 @@ public class Grupo {
 		out = out + "permissaoRemover"+ permissaoRemover +"\n";
 		out = out + "permissaoAlterar"+ permissaoAlterar+"\n" ;
 		out = out + "permissaoVisualizar"+ permissaoVisualizar+"\n" ;
+		out = out + "permissaoCriarCartao"+ permissaoCriarCartao+"\n" ;
+		out = out + "cartoes"+ cartoes +"\n" ;
 		out = out + " status do grupo: "+ status +"\n";
 		if (dataCriacao == null)
 			out = out + " dataCriacao do grupo = " + "sem data" +" \n";
@@ -160,5 +167,97 @@ public class Grupo {
 		this.permissaoVisualizar = permissaoVisualizar;
 	}
 	
+	public ArrayList<Usuario> getPermissaoCriarCartao() {
+		return permissaoCriarCartao;
+	}
+
+	public void setPermissaoCriarCartao(ArrayList<Usuario> permissaoCartao) {
+		this.permissaoCriarCartao = permissaoCartao;
+	}
+
+	public ArrayList<Cartao> getCartoes() {
+		return cartoes;
+	}
+
+	public void setCartoes(ArrayList<Cartao> cartoes) {
+		this.cartoes = cartoes;
+	}
 	
+	public boolean adicionaMembro(Usuario userWhoAdds,Usuario userToBeAdd) {
+		if (isStatus() == true && getPermissaoAdicionar().contains(userWhoAdds) == true) {
+			getMembros().add(userToBeAdd);
+			adicionaPermissao(userWhoAdds,userToBeAdd,Permissao.valuesInArrayList());
+			userToBeAdd.getGrupos().add(this);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean removeMembro(Usuario userWhoRemoves, Usuario userToBeRemoved) {
+		if (isStatus() == true && getPermissaoRemover().contains(userWhoRemoves) == true && userToBeRemoved != this.getDono()) {
+			getMembros().remove(userToBeRemoved);
+			removePermissao(userWhoRemoves,userToBeRemoved,Permissao.valuesInArrayList());
+			userToBeRemoved.getGrupos().remove(this);
+			return true;
+		}
+		else
+			return false;
+		}
+	
+	public boolean adicionaPermissao(Usuario userWhoGivesPermission, Usuario userWhoRecivePermissions, ArrayList<Permissao> listOfPermission) {
+		if (isStatus() == true && getPermissaoAlterar().contains(userWhoGivesPermission) == true) {
+			for (Permissao p: listOfPermission) {
+				if (p == Permissao.ADICIONAR_USUARIO) {
+					getPermissaoAdicionar().add(userWhoRecivePermissions);
+				}
+				if (p == Permissao.ALTERAR_PERMISSAO) {
+					getPermissaoAlterar().add(userWhoRecivePermissions);
+				}
+				if(p == Permissao.REMOVER_USUARIO) {
+					getPermissaoRemover().add(userWhoRecivePermissions);
+				}
+				if(p == Permissao.VISUALIZAR_INFO) {
+					getPermissaoVisualizar().add(userWhoRecivePermissions);
+				}
+				if(p == Permissao.CRIAR_CARTAO) {
+					getPermissaoCriarCartao().add(userWhoRecivePermissions);
+				}
+			}
+			return true;
+		}else 
+			return false;
+	}
+	
+	public boolean removePermissao(Usuario userWhoRemovesPermission, Usuario userWhoLostPermissions, ArrayList<Permissao> listOfPermission) {
+		if (isStatus() == true && getPermissaoAlterar().contains(userWhoRemovesPermission) == true && userWhoLostPermissions != this.getDono()) {
+			for (Permissao p: listOfPermission) {
+				if (p == Permissao.ADICIONAR_USUARIO) {
+					getPermissaoAdicionar().remove(userWhoLostPermissions);
+				}
+				if (p == Permissao.ALTERAR_PERMISSAO) {
+					getPermissaoAlterar().remove(userWhoLostPermissions);
+				}
+				if(p == Permissao.REMOVER_USUARIO) {
+					getPermissaoRemover().remove(userWhoLostPermissions);
+				}
+				if(p == Permissao.VISUALIZAR_INFO) {
+					getPermissaoVisualizar().remove(userWhoLostPermissions);
+				}
+				if(p == Permissao.CRIAR_CARTAO) {
+					getPermissaoCriarCartao().remove(userWhoLostPermissions);
+				}
+			}
+			return true;
+		}else 
+			return false;
+	}
+	
+	public boolean adicionaCartao(Cartao cartao) {
+		if (isStatus() == true) {
+			getCartoes().add(cartao);
+			return true;
+		}else return false;
+	}
+
 }
