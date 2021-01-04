@@ -1,15 +1,10 @@
 /*	Questoes:
 
-	1) Explique o que é polimorfismo, qual sua importancia e por que deve ser utilizado.
-	R: Polimorfismo é o principio do qual dada uma classe mae, o qual possue sua implementacao,temos comportamentos diferentes para cada classe filha dessa classe mae para os metodos com a mesma assinatura. 
-	Sua importancia é dada quando precisamos que as subclasses tenham comportamentos específicos e diferentes entre si. 
-	Sua ultilizacao é necessária para que assim possamos ter  um código mais legível e coeso, visto que apesar de ser implementado diferentes, a o nome da operação é o mesmo, e além do fato de tornar o código mais flexivel e escalavel, pelo fato de poder incluir novas classses sem alterar as existentes.
+	3.1.1) Qual foi a estratégia abordada: Interface, Classe Abstrata ou manutenção da classe concreta? Explique sua escolha.
+	R: Classe Abstrata. O primeiro ponto a se observar é que a classe GrupoPublico e classe GrupoPrivado estão intimamente ligadas entre si e se relacionam com a classe Grupo (classe mãe) mais como tipos especificos de Grupo,no sentido de herança, e não como classes que devem obedecer uma certo contrato de implementação assim como é a interface, podendo ter a possíbilidade, inclusive, de ter metodos concretos dentro de Grupo que são herdados pelas classes filhas, GrupoPublico e GrupoPrivado.
 	
-	2) Como é o funcionamento do polimorfismo na linguagem Java?
-	R: Quando um objeto, que é uma subclasse, chama um método polimorfico, esse metodo estara sobrescrito sobre o metodo da super classe, pois possui a mesma assinatura, dessa forma o  programa irá buscar pelo método "mais próximo" da classe do objeto que chamou o método, portanto o comportamento que será executado será o próprio método da subclasse. Importante ressaltar que isso só é possível por causa da Ligação dinâmica do java (a mensagem só é ligada a um método em tempo de execução).
-	
-	3) O que acontece se instanciarmos uma subclasse em uma variavel da superclasse e tentarmos chamar um método que nao foi implementado na superclasse? Como você resolveria essa situacao?
-	R: Ocorrerá um erro, pois como é uma variável da superclasse, ela também deve ter o método implementado na sua classe. Então para que funcione, teremos que implementar o método na super classe também e não apenas na subclasse
+	3.1.4) Em outra possível abordagem, a classe Usuario poderia ser implementada como uma Interface? Caso sim, por quê? Quais alterações seriam necessárias?
+	R: Sim, pois poderiamos enxergar a classe Usuario apenas como um modelo o qual as classes filhas devem seguir, determinando os metodos que devem ser implementados. Para fazer esse alteração precisariamos passar todos os atributos de usuario para suas classes filhas, transformar todas seus metodos em metodos abstrados e fazer a implementação desses metodos nas suas classes filhas. Apesar de ser possível, não acredito que seja a melhor abordagem, tendo em vista que usando classe Abstratas podemos ter métodos concretos e instancias na classe usuario, o que faz com que reutilizamos bastante código que, no caso de ser interface, precisariamos copiar para cada filho, mesmo tendo implemetações iguais, como seria o caso nesse exemplo.
 
 */
 
@@ -23,19 +18,44 @@ public class Main {
 		Calendar futureTime = Calendar.getInstance();
 		futureTime.set(2030, Calendar.MARCH, 6);
 		
-		System.out.println("0. Crie N variáveis do tipo Usuario e suas herdeiras (algum deles sendo uma instância Admin) e tente criar um grupo para cada usuário.");
-		System.out.println();
-
-		Usuario userSad = new Usuario (
+		Perfil perfilSad = new Perfil(
+				Sexo.Homem,
+				Calendar.getInstance(),
+				"cidade",
+				Estado.Alagoas,
+				"(19)999999999",
+				"descricao1",
+				"foto1"
+				);
+		Perfil perfilBoring = new Perfil(
+				Sexo.Homem,
+				Calendar.getInstance(),
+				"cidade",
+				Estado.Acre,
+				"(19)999999999",
+				"descricao2",
+				"foto2"
+				);
+		Perfil perfilAdmin = new Perfil(
+				Sexo.Mulher,
+				Calendar.getInstance(),
+				"cidade",
+				Estado.Amapá,
+				"(19)999999999",
+				"descricao3",
+				"foto3"
+				);
+		Usuario userSad = new UsuarioComum (
 				"userSad", 
 				"tristeza@gmail.com.br", 
 				"triste0123", 
 				"descricao triste",
 				false ,
 				new ArrayList<Grupo>(),
-				Calendar.getInstance()
+				Calendar.getInstance(),
+				perfilSad
 				);
-		UsuarioConvidado userBoring = new UsuarioConvidado (
+		Usuario userBoring = new UsuarioConvidado (
 				"userBoring", 
 				"chato@gmail.com.br", 
 				"chato0123", 
@@ -43,43 +63,30 @@ public class Main {
 				false ,
 				new ArrayList<Grupo>(),
 				Calendar.getInstance(),
-				futureTime
+				futureTime,
+				perfilBoring
 				);
-		Admin adminSenior = new Admin(
+		Usuario adminSenior = new Admin(
 				"adminSenior", 
 				"Administrator@gmail.com.br", 
 				"admin0123", 
 				"descricao de admin",
 				true ,
 				new ArrayList<Grupo>(),
-				Calendar.getInstance()
+				Calendar.getInstance(),
+				perfilAdmin
 				);
 		
-		System.out.println(" 0.1 userSad criando grupo...");
-		Grupo grupo1 = userSad.criaGrupo(false);
-		if (grupo1 != null) System.out.println(" Grupo criado!");
-		else System.out.println(" Não foi possível criar o grupo!");
-		System.out.println();
-
-		System.out.println(" 0.2 userBoring criando grupo...");
-		Grupo grupo2 = userBoring.criaGrupo(false);
-		if (grupo2 != null) System.out.println(" Grupo criado!");
-		else System.out.println(" Não foi possível criar o grupo!");
-		System.out.println();
-
-		System.out.println(" 0.3 adminSenior criando grupo...");
+		System.out.println("___________ 0. Crie N grupos, privados e públicos. ____________ ");
+		System.out.println("___________ 0.1. criando grupo publico ____________ ");
+		System.out.println(" adminSenior criando grupo publico");
 		Grupo publicGroup1 = adminSenior.criaGrupo(true); 
 		if (publicGroup1 != null) System.out.println(" Grupo criado!");
 		else System.out.println(" Não foi possível criar o grupo!");
 		System.out.println();
-
-		System.out.println(" 0.4 adminSenior criando grupo...");
-		Grupo publicGroup2 = adminSenior.criaGrupo(true); 
-		if (publicGroup2 != null) System.out.println(" Grupo criado!");
-		else System.out.println(" Não foi possível criar o grupo!");
-		System.out.println();
 		
-		System.out.println(" 0.5 adminSenior criando grupo...");
+		System.out.println("___________ 0.2. criando grupo privado ____________ ");
+		System.out.println(" adminSenior criando grupo privado");
 		Grupo privateGroup1 = adminSenior.criaGrupo(false); 
 		if (privateGroup1 != null) System.out.println(" Grupo criado!");
 		else System.out.println(" Não foi possível criar o grupo!");
@@ -89,9 +96,9 @@ public class Main {
 		listOfPermission.add(Permissao.ADICIONAR_USUARIO);
 
 		
-		System.out.println("___________ publicGroup1 ____________ ");
+		System.out.println("___________ 1. grupo publico ____________ ");
 		System.out.println();
-		System.out.println("1. Adicione ao menos 2 membros ao grupo.");
+		System.out.println("1.1 Adicione ao menos 3 usuários ao grupo, um usuário de cada tipo.");
 		System.out.println();
 		if (publicGroup1.adicionaMembro(adminSenior, userBoring) == false) {
 			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
@@ -100,347 +107,196 @@ public class Main {
 			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
 		}else System.out.println( " Membro adicionado no grupo!");
 		System.out.println();
-		System.out.println("2. Imprima as permissoes de cada membro adicionado:");
 		System.out.println();
-		System.out.println(" 2.1 Quem tem permissao de adicionar:");
-		for(Usuario user: publicGroup1.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.2 Quem tem permissao de alterar:");
-		for(Usuario user: publicGroup1.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: publicGroup1.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.4 Quem tem permissao de remover:");
-		for(Usuario user: publicGroup1.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.5 Quem tem permissao de visualizar:");
-		for(Usuario user: publicGroup1.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
+
+		System.out.println("1.2. Utilize um usuário do grupo para criar 6 cartões com diferentes níveis de prioridade e atribuia como o responsável algum outro usuário do grupo.");
+		if (adminSenior.criarCartao(0, "cartao publico 1", 1, "assunto", 1, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(0, "cartao publico 2", 1, "assunto", 2, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(0, "cartao publico 3", 1, "assunto", 3, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(0, "cartao publico 4", 1, "assunto", 4, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(0, "cartao publico 5", 1, "assunto", 4, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(0, "cartao publico 6", 1, "assunto", 5, userSad ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
 		System.out.println();
-		System.out.println("3. Teste a permissoes para ao menos 1 membro do grupo, ou seja:");
 		System.out.println(); 
-		System.out.println(" 3.1 Remova membros do grupo e imprima o resultado obtido.");
-		System.out.println( "  3.1.1 Membros no grupo antes de remover:");
-		for(Usuario user: publicGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup1.removeMembro(userBoring, userSad) == false) {
-			System.out.println( "  Nao foi possivel remover o membro no grupo!");
-		}else System.out.println( "  Membro removido do grupo!");
-		System.out.println( "  3.1.2 Membros no grupo depois de remover:");
-		for(Usuario user: publicGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.2 Adicione novos membros ao grupo e imprima o resultado obtido.");
-		System.out.println( "  3.2.1 Membros no grupo antes de adicionar:");
-		for(Usuario user: publicGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup1.adicionaMembro(userBoring, userSad) == false) {
-			System.out.println( "  Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( "  Membro adicionado no grupo!");
-		System.out.println( "  3.2.2 Membros no grupo depois de adicionar:");
-		for(Usuario user: publicGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
+
+		System.out.println("1.3. Imprima os cartoes criados:");
+		System.out.println(publicGroup1.getCartoesAFazer());
 		System.out.println(); 
-		System.out.println(" 3.3 Altere a permissao de membros do grupo.");
-		System.out.println( "  3.3.1 Membros que tem permissao de adicionar antes de tirar a permissao:");
-		for(Usuario user: publicGroup1.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup1.removePermissao(userBoring, userSad, listOfPermission) == false) {
-			System.out.println( "  Nao foi possivel remover as permissoes!");
-		}else System.out.println( "  Permissoes removidas!");
-		System.out.println( "  3.3.2 Membros que tem permissao de adicionar depois de tirar a permissao:");
-		for(Usuario user: publicGroup1.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.4 Visualize os dados do grupo.");
-		System.out.println("  "+publicGroup1);
-		System.out.println();
-		System.out.println(" 4 Imprima a lista de usuarios de cada permissao.");
-		System.out.println();
-		System.out.println(" 4.1 Quem tem permissao de adicionar:");
-		for(Usuario user: publicGroup1.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.2 Quem tem permissao de alterar:");
-		for(Usuario user: publicGroup1.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: publicGroup1.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.4 Quem tem permissao de remover:");
-		for(Usuario user: publicGroup1.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.5 Quem tem permissao de visualizar:");
-		for(Usuario user: publicGroup1.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println();		
-		System.out.println();
+		System.out.println(); 
+
+		System.out.println(" 1.4. Execute todos os cartões criados de acordo com suas prioridades.:");
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+			
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
 		
-		System.out.println("___________ publicGroup2 ____________ ");
-		System.out.println();
-		System.out.println("1. Adicione ao menos 2 membros ao grupo.");
-		System.out.println();
-		if (publicGroup2.adicionaMembro(adminSenior, userSad) == false) {
-			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( " Membro adicionado no grupo!");
-		if (publicGroup2.adicionaMembro(adminSenior, userBoring) == false) {
-			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( " Membro adicionado no grupo!");
-		System.out.println();
-		System.out.println("2. Imprima as permissoes de cada membro adicionado:");
-		System.out.println();
-		System.out.println(" 2.1 Quem tem permissao de adicionar:");
-		for(Usuario user: publicGroup2.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.2 Quem tem permissao de alterar:");
-		for(Usuario user: publicGroup2.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: publicGroup2.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.4 Quem tem permissao de remover:");
-		for(Usuario user: publicGroup2.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.5 Quem tem permissao de visualizar:");
-		for(Usuario user: publicGroup2.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println("3. Teste a permissoes para ao menos 1 membro do grupo, ou seja:");
-		System.out.println(); 
-		System.out.println(" 3.1 Remova membros do grupo e imprima o resultado obtido.");
-		System.out.println( "  3.1.1 Membros no grupo antes de remover:");
-		for(Usuario user: publicGroup2.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup2.removeMembro(userSad, userBoring) == false) {
-			System.out.println( "  Nao foi possivel remover o membro no grupo!");
-		}else System.out.println( "  Membro removido do grupo!");
-		System.out.println( "  3.1.2 Membros no grupo depois de remover:");
-		for(Usuario user: publicGroup2.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.2 Adicione novos membros ao grupo e imprima o resultado obtido.");
-		System.out.println( "  3.2.1 Membros no grupo antes de adicionar:");
-		for(Usuario user: publicGroup2.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup2.adicionaMembro(userSad, userBoring) == false) {
-			System.out.println( "  Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( "  Membro adicionado no grupo!");
-		System.out.println( "  3.2.2 Membros no grupo depois de adicionar:");
-		for(Usuario user: publicGroup2.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println(); 
-		System.out.println(" 3.3 Altere a permissao de membros do grupo.");
-		System.out.println( "  3.3.1 Membros que tem permissao de adicionar antes de tirar a permissao:");
-		for(Usuario user: publicGroup2.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (publicGroup2.removePermissao(userSad, userBoring, listOfPermission) == false) {
-			System.out.println( "  Nao foi possivel remover as permissoes!");
-		}else System.out.println( "  Permissoes removidas!");
-		System.out.println( "  3.3.2 Membros que tem permissao de adicionar depois de tirar a permissao:");
-		for(Usuario user: publicGroup2.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.4 Visualize os dados do grupo.");
-		System.out.println("  "+publicGroup2);
-		System.out.println();
-		System.out.println(" 4 Imprima a lista de usuarios de cada permissao.");
-		System.out.println();
-		System.out.println(" 4.1 Quem tem permissao de adicionar:");
-		for(Usuario user: publicGroup2.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.2 Quem tem permissao de alterar:");
-		for(Usuario user: publicGroup2.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: publicGroup2.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.4 Quem tem permissao de remover:");
-		for(Usuario user: publicGroup2.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.5 Quem tem permissao de visualizar:");
-		for(Usuario user: publicGroup2.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println();		
-		System.out.println();
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
 		
-		System.out.println("___________ privateGroup1 ____________ ");
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: publicGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		
+		System.out.println("___________ 2. grupo privado ____________ ");
 		System.out.println();
-		System.out.println("1. Adicione ao menos 2 membros ao grupo.");
+		System.out.println("2.1 Adicione ao menos 3 usuários ao grupo, um usuário de cada tipo.");
 		System.out.println();
-		if (privateGroup1.adicionaMembro(adminSenior, userSad) == false) {
-			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( " Membro adicionado no grupo!");
 		if (privateGroup1.adicionaMembro(adminSenior, userBoring) == false) {
 			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
 		}else System.out.println( " Membro adicionado no grupo!");
+		if (privateGroup1.adicionaMembro(adminSenior, userSad) == false) {
+			System.out.println( " Nao foi possivel adicionar o membro no grupo!");
+		}else System.out.println( " Membro adicionado no grupo!");
 		System.out.println();
-		System.out.println("2. Imprima as permissoes de cada membro adicionado:");
 		System.out.println();
-		System.out.println(" 2.1 Quem tem permissao de adicionar:");
-		for(Usuario user: privateGroup1.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.2 Quem tem permissao de alterar:");
-		for(Usuario user: privateGroup1.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: privateGroup1.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.4 Quem tem permissao de remover:");
-		for(Usuario user: privateGroup1.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 2.5 Quem tem permissao de visualizar:");
-		for(Usuario user: privateGroup1.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println("3. Teste a permissoes para ao menos 1 membro do grupo, ou seja:");
-		System.out.println(); 
-		System.out.println(" 3.1 Remova membros do grupo e imprima o resultado obtido.");
-		System.out.println( "  3.1.1 Membros no grupo antes de remover:");
-		for(Usuario user: privateGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (privateGroup1.removeMembro(userSad, userSad) == false) {
-			System.out.println( "  Nao foi possivel remover o membro no grupo!");
-		}else System.out.println( "  Membro removido do grupo!");
-		System.out.println( "  3.1.2 Membros no grupo depois de remover:");
-		for(Usuario user: privateGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.2 Adicione novos membros ao grupo e imprima o resultado obtido.");
-		System.out.println( "  3.2.1 Membros no grupo antes de adicionar:");
-		for(Usuario user: privateGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (privateGroup1.adicionaMembro(userSad, userSad) == false) {
-			System.out.println( "  Nao foi possivel adicionar o membro no grupo!");
-		}else System.out.println( "  Membro adicionado no grupo!");
-		System.out.println( "  3.2.2 Membros no grupo depois de adicionar:");
-		for(Usuario user: privateGroup1.getMembros()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println(); 
-		System.out.println(" 3.3 Altere a permissao de membros do grupo.");
-		System.out.println( "  3.3.1 Membros que tem permissao de adicionar antes de tirar a permissao:");
-		for(Usuario user: privateGroup1.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		if (privateGroup1.removePermissao(userSad, userSad, listOfPermission) == false) {
-			System.out.println( "  Nao foi possivel remover as permissoes!");
-		}else System.out.println( "  Permissoes removidas!");
-		System.out.println( "  3.3.2 Membros que tem permissao de adicionar depois de tirar a permissao:");
-		for(Usuario user: privateGroup1.getPermissaoAdicionar()) {
-			System.out.println("   "+user.getLogin());
-		}
-		System.out.println();
-		System.out.println(" 3.4 Visualize os dados do grupo.");
-		System.out.println("  "+privateGroup1);
-		System.out.println();
-		System.out.println(" 4 Imprima a lista de usuarios de cada permissao.");
-		System.out.println();
-		System.out.println(" 4.1 Quem tem permissao de adicionar:");
-		for(Usuario user: privateGroup1.getPermissaoAdicionar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.2 Quem tem permissao de alterar:");
-		for(Usuario user: privateGroup1.getPermissaoAlterar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.3 Quem tem permissao de criar cartao:");
-		for(Usuario user: privateGroup1.getPermissaoCriarCartao()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.4 Quem tem permissao de remover:");
-		for(Usuario user: privateGroup1.getPermissaoRemover()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println(" 4.5 Quem tem permissao de visualizar:");
-		for(Usuario user: privateGroup1.getPermissaoVisualizar()) {
-			System.out.println("  "+user.getLogin());
-		}
-		System.out.println();		
-		System.out.println();
-		
-		System.out.println("Para cada usuario criado, crie N cartoes e imprima o resultado.");
-		System.out.println();
-		System.out.println(" ___________ userSad ____________ ");
-		if (userSad.criarCartao(0) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (userSad.criarCartao(0)== false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (userSad.criarCartao(0) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		System.out.println();
-		System.out.println(" ___________ userBoring ____________ ");
-		if (userBoring.criarCartao(1) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (userBoring.criarCartao(1)== false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (userBoring.criarCartao(1) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		System.out.println();
-		System.out.println(" ___________ adminSenior ____________ ");
-		if (adminSenior.criarCartao(2) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (adminSenior.criarCartao(2)== false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		if (adminSenior.criarCartao(2) == false) {
-			System.out.println( " Nao foi possivel criar cartao!");
-		}else System.out.println( " Cartao criado!");
-		System.out.println();
-		System.out.println(" Cartoes do publicGroup1:");
-		System.out.println(publicGroup1.getCartoes());
-		System.out.println();
-		System.out.println(" Cartoes do publicGroup2:");
-		System.out.println(publicGroup2.getCartoes());
-		System.out.println();
-		System.out.println(" Cartoes do privateGroup1:");
-		System.out.println(privateGroup1.getCartoes());
 
+		System.out.println("2.2. Utilize um usuário do grupo para criar 6 cartões com diferentes níveis de prioridade e atribuia como o responsável algum outro usuário do grupo.");
+		if (adminSenior.criarCartao(1, "cartao privado 1", 1, "assunto", 1, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(1, "cartao privado 2", 1, "assunto", 2, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(1, "cartao privado 3", 1, "assunto", 3, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(1, "cartao privado 4", 1, "assunto", 4, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(1, "cartao privado 5", 1, "assunto", 1, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		if (adminSenior.criarCartao(1, "cartao privado 6", 1, "assunto", 5, userBoring ) == false) {
+			System.out.println( " Nao foi possivel criar cartao!");
+		}else System.out.println( " Cartao criado!");
+		System.out.println();
+		System.out.println(); 
+
+		System.out.println("2.3. Imprima os cartoes criados:");
+		System.out.println(privateGroup1.getCartoesAFazer());
+		System.out.println(); 
+		System.out.println(); 
+
+		System.out.println("2.4. Execute todos os cartões criados de acordo com suas prioridades.:");
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+			
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
+		
+		if (userSad.executarTarefaDeMaiorPrioridade() == false) {
+			System.out.println( " Nao foi possivel executar tarefa!");
+		}else System.out.println( "_____ Tarefa executada! _____");
+		for (Cartao cartao: privateGroup1.getCartoesAFazer()) {
+			System.out.println("  cartao id = " + cartao.getId());
+			System.out.println("  cartao = " + cartao.getNome());
+			System.out.println("  labels = " + cartao.getLabel());
+			System.out.println("  prioridade: "+cartao.getPrioridade() + "\n");
+			}
 	}
 }

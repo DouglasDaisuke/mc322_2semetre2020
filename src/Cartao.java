@@ -1,27 +1,32 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Cartao {
+public class Cartao implements Comparable<Cartao>{
 
 	private static int numeroCartoes;
 	private int id;
 	private int visibilidade;
 	private String nome;
-	private ArrayList<Label> label = new ArrayList<Label>();
+	private ArrayList<Label> label;
 	private String assunto;
 	private boolean invitationOnly;
 	private Calendar dataCriacao;
+	private int prioridade;
+	private Usuario responsavel;
 
 	public Cartao(int visibilidade, String nome, Label label,String assunto, boolean invitationOnly,
-			Calendar dataCriacao) {
+			Calendar dataCriacao, int prioridade, Usuario responsavel) {
 		this.id = numeroCartoes;
 		setNumeroCartoes( numeroCartoes + 1);
 		this.visibilidade = visibilidade;
 		this.nome = nome;
+		this.label = new ArrayList<Label>();
 		this.label.add(label);
 		this.assunto = assunto;
 		this.invitationOnly = invitationOnly;
 		this.dataCriacao = dataCriacao;
+		this.prioridade = prioridade;
+		this.responsavel = responsavel;
 	}
 
 	public Cartao() {
@@ -39,6 +44,7 @@ public class Cartao {
 	public String toString() {
 		String out ="numeroCartoes = " + numeroCartoes + "\n";
 		out = out + "id = " + id +"\n";
+		out = out + "prioridade: " + prioridade +"\n";
 		out = out + "visibilidade = " + visibilidade +"\n";
 		out = out + "nome = "+ nome +"\n";
 		out = out + "Label = "+ label +"\n";
@@ -47,6 +53,7 @@ public class Cartao {
 			out = out + "dataCriacao = " + "sem data" +"\n";
 		else
 			out = out + "dataCriacao = " + dataCriacao.getTime() +"\n";
+		out = out + "responsavel: " + responsavel +"\n";
 		return out;
 	}
 
@@ -78,6 +85,14 @@ public class Cartao {
 		this.nome = nome;
 	}
 	
+	public ArrayList<Label> getLabel() {
+		return label;
+	}
+
+	public void setLabel(ArrayList<Label> label) {
+		this.label = label;
+	}
+
 	public String getAssunto() {
 		return assunto;
 	}
@@ -102,4 +117,30 @@ public class Cartao {
 		this.dataCriacao = dataCriacao;
 	}
 
+	public int getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
+	}
+	
+	public Usuario getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Usuario responsavel) {
+		this.responsavel = responsavel;
+	}
+	
+	@Override
+	public int compareTo(Cartao cartao2) {
+		if (this.getPrioridade() < cartao2.getPrioridade())
+			return 1;
+		else if (this.getPrioridade() > cartao2.getPrioridade())
+			return -1;
+		else return 0;
+	}
+
+	
 }

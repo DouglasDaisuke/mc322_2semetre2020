@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Admin extends Usuario{
-	public Admin(String login, String email, String senha, String descricao, 
-			boolean status, ArrayList<Grupo> grupos, Calendar dataAtivacao, Perfil perfil) {
+public class UsuarioComum extends Usuario{
+
+	public UsuarioComum(String login, String email, String senha, String descricao, boolean status,
+			ArrayList<Grupo> grupos, Calendar dataAtivacao, Perfil perfil) {
 		super(login, email, senha, descricao, status, grupos, dataAtivacao, perfil);
 		// TODO Auto-generated constructor stub
 	}
@@ -30,34 +31,12 @@ public class Admin extends Usuario{
 		return out;
 	}
 
-	public boolean desabilitaGrupo(Grupo groupToBeDisable) {
-		if (groupToBeDisable.setStatus(false, this) == true)
-			return true;
-		else
-			return false;
+	@Override
+	public Grupo criaGrupo(boolean visibilidade) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
-	public Grupo criaGrupo(boolean visibilidade) {
-		if (visibilidade == true) {
-			GrupoPublico grupoPublico = new GrupoPublico(
-						"groupPublicName",
-						"descriptionOfGroup",
-						this,
-						true,
-						Calendar.getInstance()
-						);
-			return grupoPublico;
-		}else {
-			GrupoPrivado grupoPrivado = new GrupoPrivado(
-					"groupPrivateName",
-					"descriptionOfGroup",
-					this,
-					true,
-					Calendar.getInstance()
-					);
-			return grupoPrivado;
-		}
-	}
-
+	
 
 }

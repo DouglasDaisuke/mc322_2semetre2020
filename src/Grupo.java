@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Grupo {
+public abstract class Grupo {
 	private static int numGrupos;
 	private int id;
 	private String nome;
@@ -15,7 +15,9 @@ public class Grupo {
 	private ArrayList<Usuario> permissaoAlterar;
 	private ArrayList<Usuario> permissaoVisualizar;
 	private ArrayList<Usuario> permissaoCriarCartao;
-	private ArrayList<Cartao> cartoes;
+	private ArrayList<Cartao> cartoesAFazer;
+	private ArrayList<Cartao> cartoesFeitos;
+
 
 	public Grupo(String nome, String descricao, Usuario dono, boolean status,
 			Calendar dataCriacao) {
@@ -35,7 +37,8 @@ public class Grupo {
 		this.permissaoVisualizar.add(dono);
 		this.permissaoCriarCartao = new ArrayList<Usuario>();
 		this.permissaoCriarCartao.add(dono);
-		this.cartoes = new ArrayList<Cartao>();
+		this.cartoesAFazer = new ArrayList<Cartao>();
+		this.cartoesFeitos = new ArrayList<Cartao>();
 		this.membros = new ArrayList<Usuario>(); 
 		this.status = status;
 		this.dataCriacao = dataCriacao;
@@ -43,26 +46,7 @@ public class Grupo {
 		dono.getGrupos().add(this);
 	}
 	
-	public String toString() {
-		String out =  "{ \n";
-		out = out + " nome do grupo:"+ nome  +" (id: "+ id +")\n";
-		out = out + " descricao do grupo:" + descricao  +"\n";
-		out = out + " dono do grupo: "+ dono +"\n";
-		out = out + " membros : "+ membros +"\n";
-		out = out + "permissaoAdicionar"+ permissaoAdicionar+"\n";
-		out = out + "permissaoRemover"+ permissaoRemover +"\n";
-		out = out + "permissaoAlterar"+ permissaoAlterar+"\n" ;
-		out = out + "permissaoVisualizar"+ permissaoVisualizar+"\n" ;
-		out = out + "permissaoCriarCartao"+ permissaoCriarCartao+"\n" ;
-		out = out + "cartoes"+ cartoes +"\n" ;
-		out = out + " status do grupo: "+ status +"\n";
-		if (dataCriacao == null)
-			out = out + " dataCriacao do grupo = " + "sem data" +" \n";
-		else
-			out = out + " dataCriacao do grupo= " + dataCriacao.getTime() +" \n";
-		out = out + " }";
-		return out;
-	}
+	public abstract String toString(Usuario user); 
 	
 	public String toString_names() {
 		String out =  "\n";
@@ -175,87 +159,33 @@ public class Grupo {
 		this.permissaoCriarCartao = permissaoCartao;
 	}
 
-	public ArrayList<Cartao> getCartoes() {
-		return cartoes;
+	public ArrayList<Cartao> getCartoesAFazer() {
+		return cartoesAFazer;
 	}
 
-	public void setCartoes(ArrayList<Cartao> cartoes) {
-		this.cartoes = cartoes;
+	public void setCartoesAFazer(ArrayList<Cartao> cartoesAFazer) {
+		this.cartoesAFazer = cartoesAFazer;
+	}
+
+	public ArrayList<Cartao> getCartoesFeitos() {
+		return cartoesFeitos;
+	}
+
+	public void setCartoesFeitos(ArrayList<Cartao> cartoesFeitos) {
+		this.cartoesFeitos = cartoesFeitos;
 	}
 	
-	public boolean adicionaMembro(Usuario userWhoAdds,Usuario userToBeAdd) {
-		if (isStatus() == true && getPermissaoAdicionar().contains(userWhoAdds) == true) {
-			getMembros().add(userToBeAdd);
-			adicionaPermissao(userWhoAdds,userToBeAdd,Permissao.valuesInArrayList());
-			userToBeAdd.getGrupos().add(this);
-			return true;
-		}
-		else
-			return false;
-	}
+	public abstract boolean adicionaMembro(Usuario userWhoAdds,Usuario userToBeAdd);
 	
-	public boolean removeMembro(Usuario userWhoRemoves, Usuario userToBeRemoved) {
-		if (isStatus() == true && getPermissaoRemover().contains(userWhoRemoves) == true && userToBeRemoved != this.getDono()) {
-			getMembros().remove(userToBeRemoved);
-			removePermissao(userWhoRemoves,userToBeRemoved,Permissao.valuesInArrayList());
-			userToBeRemoved.getGrupos().remove(this);
-			return true;
-		}
-		else
-			return false;
-		}
+	public abstract boolean removeMembro(Usuario userWhoRemoves, Usuario userToBeRemoved);
 	
-	public boolean adicionaPermissao(Usuario userWhoGivesPermission, Usuario userWhoRecivePermissions, ArrayList<Permissao> listOfPermission) {
-		if (isStatus() == true && getPermissaoAlterar().contains(userWhoGivesPermission) == true) {
-			for (Permissao p: listOfPermission) {
-				if (p == Permissao.ADICIONAR_USUARIO) {
-					getPermissaoAdicionar().add(userWhoRecivePermissions);
-				}
-				if (p == Permissao.ALTERAR_PERMISSAO) {
-					getPermissaoAlterar().add(userWhoRecivePermissions);
-				}
-				if(p == Permissao.REMOVER_USUARIO) {
-					getPermissaoRemover().add(userWhoRecivePermissions);
-				}
-				if(p == Permissao.VISUALIZAR_INFO) {
-					getPermissaoVisualizar().add(userWhoRecivePermissions);
-				}
-				if(p == Permissao.CRIAR_CARTAO) {
-					getPermissaoCriarCartao().add(userWhoRecivePermissions);
-				}
-			}
-			return true;
-		}else 
-			return false;
-	}
+	public abstract boolean adicionaPermissao(Usuario userWhoGivesPermission, Usuario userWhoRecivePermissions, ArrayList<Permissao> listOfPermission);
 	
-	public boolean removePermissao(Usuario userWhoRemovesPermission, Usuario userWhoLostPermissions, ArrayList<Permissao> listOfPermission) {
-		if (isStatus() == true && getPermissaoAlterar().contains(userWhoRemovesPermission) == true && userWhoLostPermissions != this.getDono()) {
-			for (Permissao p: listOfPermission) {
-				if (p == Permissao.ADICIONAR_USUARIO) {
-					getPermissaoAdicionar().remove(userWhoLostPermissions);
-				}
-				if (p == Permissao.ALTERAR_PERMISSAO) {
-					getPermissaoAlterar().remove(userWhoLostPermissions);
-				}
-				if(p == Permissao.REMOVER_USUARIO) {
-					getPermissaoRemover().remove(userWhoLostPermissions);
-				}
-				if(p == Permissao.VISUALIZAR_INFO) {
-					getPermissaoVisualizar().remove(userWhoLostPermissions);
-				}
-				if(p == Permissao.CRIAR_CARTAO) {
-					getPermissaoCriarCartao().remove(userWhoLostPermissions);
-				}
-			}
-			return true;
-		}else 
-			return false;
-	}
+	public abstract boolean removePermissao(Usuario userWhoRemovesPermission, Usuario userWhoLostPermissions, ArrayList<Permissao> listOfPermission);
 	
 	public boolean adicionaCartao(Cartao cartao) {
 		if (isStatus() == true) {
-			getCartoes().add(cartao);
+			getCartoesAFazer().add(cartao);
 			return true;
 		}else return false;
 	}

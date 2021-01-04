@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Usuario {
+public abstract class Usuario {
 	private static int numUsuarios;
 	private int id;
 	private String login;
@@ -11,9 +11,10 @@ public class Usuario {
 	private boolean status;
 	private ArrayList<Grupo> grupos;
 	private Calendar dataAtivacao;
+	private Perfil perfil;
 
 	public Usuario(String login, String email,String senha,String descricao, boolean status, 
-			ArrayList<Grupo> grupos, Calendar dataAtivacao) {
+			ArrayList<Grupo> grupos, Calendar dataAtivacao, Perfil perfil) {
 		this.id = numUsuarios;
 		setNumUsuarios( numUsuarios + 1);
 		this.login = login;
@@ -23,28 +24,10 @@ public class Usuario {
 		this.status = status;
 		this.grupos = grupos;
 		this.dataAtivacao = dataAtivacao;
+		this.perfil = perfil;
 	}
 
-	public String toString() {
-		String group_names =  "[";
-		for (Grupo g: grupos) {
-			 group_names = group_names + g.toString_names();
-		}
-		group_names = group_names + "  ]";
-		String out =  "{ \n";
-		out = out + "  " + login +" (id: "+id +")\n";
-		out = out + "  email: "+ email +"\n";
-		out = out + "  senha: "+ senha+"\n";
-		out = out + "  status do usuario: "+ status +"\n";
-		out = out + "  grupos: " + group_names + "\n";
-		out = out + "  descricao do usuario: "+ descricao +"\n";
-		if (dataAtivacao == null)
-			out = out + "  dataAtivacao do usuario = " + "sem data" +"\n";
-		else
-			out = out + "  dataAtivacao do usuario = " + dataAtivacao.getTime() +"\n";
-		out = out + "  }";
-		return out;
-	}
+	public abstract String toString();
 	
 	public static int getNumUsuarios() {
 		return numUsuarios;
@@ -128,29 +111,79 @@ public class Usuario {
 		this.dataAtivacao = dataAtivacao;
 	}
 	
-	public Grupo criaGrupo(boolean visibilidade) {
-		return null;
+	public Perfil getPerfil() {
+		return perfil;
 	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+	
+	public abstract Grupo criaGrupo(boolean visibilidade);
 	
 	public void removeGrupo(Grupo groupToBeRemoved) {
 		getGrupos().remove(groupToBeRemoved);;
 	}
 	
-	public boolean criarCartao(int id) {
+	public boolean criarCartao(int id, String nomeCartao, int visibilidade, String assunto, int prioridade, Usuario responsavel) {
 		for (Grupo grupo: getGrupos()){
 			if (grupo.getId() == id && grupo.getPermissaoCriarCartao().contains(this)) {
-				Cartao cartao = new Cartao(
-						1, 
-						"Cartao", 
-						Label.TO_DO, 
-						"assunto",
-						true,
-						Calendar.getInstance()
-						);
-				grupo.adicionaCartao(cartao);
-				return true;
+				if (grupo.getMembros().contains(responsavel)) {
+					Cartao cartao = new Cartao(
+							visibilidade, 
+							nomeCartao, 
+							Label.TO_DO, 
+							assunto,
+							true,
+							Calendar.getInstance(),
+							prioridade,
+							responsavel
+							);
+					grupo.adicionaCartao(cartao);
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+	
+	public Cartao encontraCartaoDeMaiorPrioridade() {
+		Cartao cartaoPrioritario = null;
+		boolean primeiroCartao = true;
+		for (Grupo grupo: getGrupos()){
+			for (Cartao cartao: grupo.getCartoesAFazer()){
+				if (primeiroCartao) {
+					cartaoPrioritario = cartao;
+					primeiroCartao = false;
+				}
+				else if (cartao.compareTo(cartaoPrioritario) >= 0)
+					cartaoPrioritario = cartao;
+			}
+		}
+		return cartaoPrioritario;
+	}
+	
+	public void removeLabeldoCartao(Label labelToRemove, Cartao cartao ) {
+		int index = 0;
+		int LabelIndex = 0;
+		for(Label label : cartao.getLabel()) {
+			if (label == labelToRemove) {
+				LabelIndex = index;
+				break;
+			}
+			else index++;
+		}
+		cartao.getLabel().remove(LabelIndex);
+	}
+	
+	public boolean executarTarefaDeMaiorPrioridade() {
+		Cartao cartaoPrioritario = encontraCartaoDeMaiorPrioridade();
+		if (cartaoPrioritario != null) {
+			removeLabeldoCartao(Label.TO_DO, cartaoPrioritario);
+			cartaoPrioritario.getLabel().add(Label.DONE);
+			cartaoPrioritario.setPrioridade(5);
+			return true;
+		}else 
+			return false;		
 	}
 }
